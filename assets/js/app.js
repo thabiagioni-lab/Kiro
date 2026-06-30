@@ -42,6 +42,7 @@ function atualizarTela() {
 }
 
 atualizarTela();
+
 // ======================
 // BOTÃO DE DEPÓSITO
 // ======================

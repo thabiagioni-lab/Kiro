@@ -14,6 +14,8 @@ const distanciaElemento = document.getElementById("distancia");
 const progresso = document.querySelector(".progresso");
 const porcentagem = document.getElementById("porcentagem");
 
+const botaoAdicionar = document.querySelector(".verde");
+
 // ===== FUNÇÃO =====
 
 function atualizarTela(){
@@ -30,12 +32,35 @@ function atualizarTela(){
 
     const porcento = (saldo / META) * 100;
 
-    progresso.style.width =
-        porcento + "%";
+    progresso.style.width = porcento + "%";
 
     porcentagem.innerHTML =
         porcento.toFixed(1) + "%";
 
 }
+
+// ===== BOTÃO =====
+
+botaoAdicionar.addEventListener("click", function(){
+
+    let valor = prompt("Quanto deseja guardar?");
+
+    if(valor === null) return;
+
+    valor = Number(valor.replace(",", "."));
+
+    if(isNaN(valor) || valor <= 0){
+
+        alert("Digite um valor válido.");
+
+        return;
+
+    }
+
+    saldo += valor;
+
+    atualizarTela();
+
+});
 
 atualizarTela();

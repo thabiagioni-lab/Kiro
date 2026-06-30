@@ -1,58 +1,444 @@
-function criarPetala() {
+/* ===================================================
+   KIRO v1.0
+   Base de Estilos
+=================================================== */
 
-    const petala = document.createElement("div");
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    petala.className = "petala";
+:root{
 
-    petala.textContent = "🌸";
+    --matcha:#EDF6E6;
+    --matcha-light:#F5FAF0;
+    --green:#7FA66A;
+    --green-dark:#5D7A4E;
 
-    petala.style.left = Math.random() * window.innerWidth + "px";
+    --pink:#F6C7D6;
+    --pink-dark:#E9A8BC;
 
-    petala.style.animationDuration = (6 + Math.random() * 4) + "s";
+    --card:rgba(255,253,248,.82);
 
-    petala.style.fontSize = (16 + Math.random() * 14) + "px";
+    --text:#465340;
 
-    document.body.appendChild(petala);
-
-    setTimeout(() => {
-        petala.remove();
-    }, 10000);
+    --shadow:0 18px 40px rgba(0,0,0,.08);
 
 }
 
-setInterval(criarPetala, 3500);
-      .petala{
+body{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+    overflow-x:hidden;
+
+    font-family:'Poppins',sans-serif;
+
+    color:var(--text);
+
+    background:
+
+    radial-gradient(circle at 10% 10%,rgba(246,199,214,.35),transparent 22%),
+
+    radial-gradient(circle at 90% 90%,rgba(246,199,214,.25),transparent 18%),
+
+    radial-gradient(circle at 80% 20%,rgba(255,255,255,.35),transparent 28%),
+
+    linear-gradient(180deg,var(--matcha-light),var(--matcha));
+
+}
+
+/* Cerejeiras decorativas */
+
+body::before,
+body::after{
+
+    content:"🌸";
+
     position:fixed;
-    top:-50px;
-    z-index:9999;
+
+    opacity:.08;
+
     pointer-events:none;
-    opacity:.8;
-    animation-name:cair;
-    animation-timing-function:linear;
-    animation-fill-mode:forwards;
+
+}
+
+body::before{
+
+    left:30px;
+
+    top:20px;
+
+    font-size:120px;
+
+    transform:rotate(-18deg);
+
+}
+
+body::after{
+
+    right:40px;
+
+    bottom:20px;
+
+    font-size:100px;
+
+    transform:rotate(15deg);
+
+}/* ===================================================
+   APP
+=================================================== */
+
+.app{
+
+    width:100%;
+    max-width:430px;
+
+    background:var(--card);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.45);
+
+    border-radius:32px;
+
+    padding:32px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.jp{
+
+    font-family:'Noto Serif JP',serif;
+
+    color:var(--green);
+
+    font-size:18px;
+
+}
+
+h1{
+
+    margin-top:6px;
+
+    font-size:58px;
+
+    letter-spacing:-2px;
+
+    color:var(--green-dark);
+
+}
+
+.subtitle{
+
+    margin-top:4px;
+
+    color:#6A7A62;
+
+}
+
+.phrase{
+
+    margin-top:10px;
+
+    margin-bottom:28px;
+
+    color:#8A9682;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+}
+
+/* ===================================================
+   CARDS
+=================================================== */
+
+.card{
+
+    background:rgba(255,255,255,.55);
+
+    border-radius:24px;
+
+    padding:22px;
+
+    margin-bottom:18px;
+
+    transition:.25s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.card span{
+
+    color:#7B8872;
+
+    font-size:14px;
+
+}
+
+.card h2{
+
+    margin-top:10px;
+
+    font-size:38px;
+
+}
+
+.cards{
+
+    display:flex;
+
+    gap:16px;
+
+    margin-bottom:18px;
+
+}
+
+.mini{
+
+    flex:1;
+
+    background:rgba(255,255,255,.55);
+
+    border-radius:22px;
+
+    padding:20px;
+
+    transition:.25s;
+
+}
+
+.mini:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.mini span{
+
+    font-size:13px;
+
+    color:#7B8872;
+
+}
+
+.mini h3{
+
+    margin-top:10px;
+
+    font-size:24px;
+
+}/* ===================================================
+   BARRA DE PROGRESSO
+=================================================== */
+
+.progress{
+
+    width:100%;
+
+    height:14px;
+
+    margin-top:16px;
+
+    background:#DDE7D5;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+}
+
+.progress-bar{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(90deg,var(--green),#9CC785);
+
+    border-radius:999px;
+
+    transition:width .5s ease;
+
+}
+
+#porcentagem{
+
+    margin-top:10px;
+
+    text-align:right;
+
+    color:#71806A;
+
+    font-size:14px;
+
+}
+
+/* ===================================================
+   BOTÕES
+=================================================== */
+
+.buttons{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin-top:25px;
+
+}
+
+button{
+
+    border:none;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+#depositar{
+
+    background:var(--green);
+
+    color:white;
+
+    box-shadow:0 12px 24px rgba(127,166,106,.25);
+
+}
+
+#depositar:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 18px 30px rgba(127,166,106,.35);
+
+}
+
+#retirar{
+
+    background:var(--pink);
+
+    color:white;
+
+    box-shadow:0 12px 24px rgba(246,199,214,.25);
+
+}
+
+#retirar:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 18px 30px rgba(246,199,214,.35);
+
+}
+
+/* ===================================================
+   PÉTALAS
+=================================================== */
+
+.petala{
+
+    position:fixed;
+
+    top:-40px;
+
+    pointer-events:none;
+
+    z-index:9999;
+
+    animation:cair linear forwards;
+
 }
 
 @keyframes cair{
 
     0%{
+
         transform:
-            translateY(-50px)
-            translateX(0px)
-            rotate(0deg);
+        translateY(-40px)
+        translateX(0px)
+        rotate(0deg);
+
+        opacity:0;
+
     }
 
-    50%{
-        transform:
-            translateY(50vh)
-            translateX(25px)
-            rotate(180deg);
+    10%{
+
+        opacity:.85;
+
     }
 
     100%{
+
         transform:
-            translateY(110vh)
-            translateX(-20px)
-            rotate(360deg);
+        translateY(110vh)
+        translateX(40px)
+        rotate(360deg);
+
+        opacity:0;
+
+    }
+
+}
+
+/* ===================================================
+   RESPONSIVO
+=================================================== */
+
+@media(max-width:480px){
+
+    body{
+
+        padding:20px;
+
+    }
+
+    .app{
+
+        padding:24px;
+
+    }
+
+    h1{
+
+        font-size:46px;
+
+    }
+
+    .cards{
+
+        flex-direction:column;
+
     }
 
 }

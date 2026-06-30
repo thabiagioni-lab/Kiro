@@ -42,3 +42,27 @@ function atualizarTela() {
 }
 
 atualizarTela();
+// ======================
+// BOTÃO DE DEPÓSITO
+// ======================
+
+const botaoDepositar = document.getElementById("depositar");
+
+botaoDepositar.addEventListener("click", () => {
+
+    const valorTexto = prompt("Quanto deseja guardar?");
+
+    if (valorTexto === null) return;
+
+    const valor = Number(valorTexto.replace(",", "."));
+
+    if (isNaN(valor) || valor <= 0) {
+        alert("Digite um valor válido.");
+        return;
+    }
+
+    saldo += valor;
+
+    atualizarTela();
+
+});

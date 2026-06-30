@@ -1,7 +1,7 @@
 /*
 =========================================
 KIRO
-app.js
+Controle Financeiro
 =========================================
 */
 
@@ -13,32 +13,34 @@ const App = {
     modo: "adicionar"
 };
 
-// =========================
+// ==============================
 // ELEMENTOS
-// =========================
+// ==============================
 
-const saldoEl = document.getElementById("saldo");
-const kmPercorridosEl = document.getElementById("kmPercorridos");
-const kmRestantesEl = document.getElementById("kmRestantes");
-const porcentagemEl = document.getElementById("porcentagem");
+const saldo = document.getElementById("saldo");
+const kmPercorridos = document.getElementById("kmPercorridos");
+const kmRestantes = document.getElementById("kmRestantes");
+const porcentagem = document.getElementById("porcentagem");
 const progressFill = document.getElementById("progressFill");
 
 const modal = document.getElementById("modal");
-const input = document.getElementById("valorInput");
+const modalTitulo = document.getElementById("modalTitulo");
+const modalDescricao = document.getElementById("modalDescricao");
+
+const valorInput = document.getElementById("valorInput");
 
 const btnAdicionar = document.getElementById("btnAdicionar");
 const btnRetirar = document.getElementById("btnRetirar");
-
 const btnSalvar = document.getElementById("salvar");
 const btnCancelar = document.getElementById("cancelar");
 
 const petalsContainer = document.getElementById("petals-container");
 
-// =========================
-// FORMATAR
-// =========================
+// ==============================
+// UTILITÁRIOS
+// ==============================
 
-function moeda(valor) {
+function formatarMoeda(valor) {
 
     return valor.toLocaleString("pt-BR", {
         style: "currency",
@@ -47,11 +49,7 @@ function moeda(valor) {
 
 }
 
-// =========================
-// CÁLCULOS
-// =========================
-
-function porcentagem() {
+function calcularPorcentagem() {
 
     return Math.min(
         (App.saldo / META_FINANCEIRA) * 100,
@@ -60,60 +58,84 @@ function porcentagem() {
 
 }
 
-function kmPercorridos() {
+function calcularKmPercorridos() {
 
     return Math.round(
-        DISTANCIA_TOTAL * porcentagem() / 100
+        DISTANCIA_TOTAL *
+        calcularPorcentagem() / 100
     );
 
 }
 
-function kmRestantes() {
+function calcularKmRestantes() {
 
     return Math.max(
-        DISTANCIA_TOTAL - kmPercorridos(),
+        DISTANCIA_TOTAL -
+        calcularKmPercorridos(),
         0
     );
 
 }
 
-// =========================
+// ==============================
 // TELA
-// =========================
+// ==============================
 
 function atualizarTela() {
 
-    saldoEl.textContent = moeda(App.saldo);
+    saldo.textContent =
+        formatarMoeda(App.saldo);
 
-    kmPercorridosEl.textContent =
-        kmPercorridos() + " km";
+    kmPercorridos.textContent =
+        calcularKmPercorridos() + " km";
 
-    kmRestantesEl.textContent =
-        kmRestantes() + " km";
+    kmRestantes.textContent =
+        calcularKmRestantes() + " km";
+
+    const progresso =
+        calcularPorcentagem();
+
+    porcentagem.textContent =
+        progresso.toFixed(1) + "%";
 
     progressFill.style.width =
-        porcentagem() + "%";
-
-    porcentagemEl.textContent =
-        porcentagem().toFixed(1) + "%";
+        progresso + "%";
 
 }
 
-// =========================
+// ==============================
 // MODAL
-// =========================
+// ==============================
 
-function abrirModal(tipo) {
+function abrirModal(modo) {
 
-    App.modo = tipo;
+    App.modo = modo;
 
-    input.value = "";
+    valorInput.value = "";
+
+    if (modo === "adicionar") {
+
+        modalTitulo.textContent =
+            "Adicionar dinheiro";
+
+        modalDescricao.textContent =
+            "Quanto deseja guardar hoje?";
+
+    } else {
+
+        modalTitulo.textContent =
+            "Retirar dinheiro";
+
+        modalDescricao.textContent =
+            "Quanto deseja retirar?";
+
+    }
 
     modal.classList.add("active");
 
     setTimeout(() => {
 
-        input.focus();
+        valorInput.focus();
 
     }, 100);
 
@@ -123,13 +145,13 @@ function fecharModal() {
 
     modal.classList.remove("active");
 
-    input.value = "";
+    valorInput.value = "";
 
-}// =========================
+}// ==============================
 // MOVIMENTAÇÕES
-// =========================
+// ==============================
 
-function adicionar(valor) {
+function adicionarDinheiro(valor) {
 
     App.saldo += valor;
 
@@ -139,7 +161,7 @@ function adicionar(valor) {
 
 }
 
-function retirar(valor) {
+function retirarDinheiro(valor) {
 
     App.saldo -= valor;
 
@@ -151,34 +173,34 @@ function retirar(valor) {
 
 }
 
-// =========================
+// ==============================
 // SALVAR
-// =========================
+// ==============================
 
-function salvar() {
+function salvarMovimentacao() {
 
     const valor = parseFloat(
-        input.value.replace(",", ".")
+        valorInput.value.replace(",", ".")
     );
 
     if (isNaN(valor) || valor <= 0) {
-        input.focus();
+        valorInput.focus();
         return;
     }
 
     if (App.modo === "adicionar") {
-        adicionar(valor);
+        adicionarDinheiro(valor);
     } else {
-        retirar(valor);
+        retirarDinheiro(valor);
     }
 
     fecharModal();
 
 }
 
-// =========================
+// ==============================
 // PÉTALAS
-// =========================
+// ==============================
 
 function criarPetalas() {
 
@@ -188,13 +210,13 @@ function criarPetalas() {
 
         petala.className = "petal";
 
-        petala.style.left = Math.random() * 100 + "%";
+        petala.style.left = `${Math.random() * 100}%`;
 
         petala.style.animationDuration =
-            (4 + Math.random() * 3) + "s";
+            `${4 + Math.random() * 3}s`;
 
         petala.style.animationDelay =
-            (Math.random() * 0.5) + "s";
+            `${Math.random() * 0.5}s`;
 
         petala.style.transform =
             `scale(${0.7 + Math.random()})`;
@@ -209,9 +231,9 @@ function criarPetalas() {
 
 }
 
-// =========================
+// ==============================
 // EVENTOS
-// =========================
+// ==============================
 
 btnAdicionar.addEventListener("click", () => {
     abrirModal("adicionar");
@@ -221,36 +243,39 @@ btnRetirar.addEventListener("click", () => {
     abrirModal("retirar");
 });
 
-btnSalvar.addEventListener("click", salvar);
+btnSalvar.addEventListener("click", salvarMovimentacao);
 
 btnCancelar.addEventListener("click", fecharModal);
 
-modal.addEventListener("click", (e) => {
+modal.addEventListener("click", (event) => {
 
-    if (e.target === modal) {
+    if (event.target === modal) {
         fecharModal();
     }
 
 });
 
-input.addEventListener("keydown", (e) => {
+valorInput.addEventListener("keydown", (event) => {
 
-    if (e.key === "Enter") {
-        salvar();
+    if (event.key === "Enter") {
+        salvarMovimentacao();
     }
 
-    if (e.key === "Escape") {
+    if (event.key === "Escape") {
         fecharModal();
     }
 
 });
 
-// =========================
+// ==============================
 // INICIALIZAÇÃO
-// =========================
+// ==============================
 
-// Garante que o modal sempre inicia fechado
-modal.classList.remove("active");
+document.addEventListener("DOMContentLoaded", () => {
 
-// Atualiza os valores iniciais
-atualizarTela();
+    // Garante que o modal comece fechado
+    modal.classList.remove("active");
+
+    atualizarTela();
+
+});

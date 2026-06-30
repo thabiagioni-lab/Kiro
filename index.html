@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KIRO</title>
+    <title>KIRO</title>
 
-<link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -22,79 +23,45 @@
 
 <div class="background"></div>
 
-<div class="app">
+<main class="app">
 
 <header>
 
-<p class="jp">
-
-おかえり、Thayná。
-
-</p>
+<p class="jp">おかえり、Thayná。</p>
 
 <h1>KIRO</h1>
 
-<p class="welcome">
-
-Bem-vinda de volta.
-
-</p>
+<p class="subtitle">Bem-vinda de volta.</p>
 
 <p class="phrase">
-
 Cada real guardado é um passo em direção a Izumo.
-
 </p>
 
 </header>
 
-<section class="card">
+<section class="card saldo">
 
-<p>
+<span>💰 Guardado</span>
 
-💰 Guardado
-
-</p>
-
-<h2 id="saldo">
-
-R$ 0,00
-
-</h2>
+<h2 id="saldo">R$ 0,00</h2>
 
 </section>
 
-<section class="duplo">
+<section class="cards">
 
 <div class="mini">
 
-<p>
+<span>📍 Percorrido</span>
 
-📍 Percorrido
-
-</p>
-
-<h3 id="distancia">
-
-0 km
-
-</h3>
+<h3 id="distancia">0 km</h3>
 
 </div>
 
 <div class="mini">
 
-<p>
+<span>⛩️ Restam</span>
 
-⛩️ Restam
-
-</p>
-
-<h3 id="restante">
-
-18.700 km
-
-</h3>
+<h3 id="restante">18.700 km</h3>
 
 </div>
 
@@ -102,25 +69,19 @@ R$ 0,00
 
 <section class="card">
 
-<p>
+<span>🎯 Meta</span>
 
-🎯 Meta
+<div class="progress">
 
-</p>
-
-<div class="barra">
-
-<div class="progresso"></div>
+<div class="progress-bar" id="barra"></div>
 
 </div>
 
-<span id="porcentagem">
-
-0%
-
-</span>
+<p id="porcentagem">0%</p>
 
 </section>
+
+<div class="buttons">
 
 <button id="depositar">
 
@@ -135,6 +96,8 @@ R$ 0,00
 </button>
 
 </div>
+
+</main>
 
 <script src="assets/js/app.js"></script>
 

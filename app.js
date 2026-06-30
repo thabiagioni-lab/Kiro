@@ -1,34 +1,21 @@
 /*
-=====================================================
-
+=========================================
 KIRO
-Controle Financeiro da Viagem ao Japão
-
-Versão: 1.0
-
-=====================================================
+app.js
+=========================================
 */
-
-/*====================================================
-CONFIGURAÇÕES
-====================================================*/
 
 const META_FINANCEIRA = 20000;
 const DISTANCIA_TOTAL = 18500;
 
-/*====================================================
-ESTADO DA APLICAÇÃO
-====================================================*/
-
-const state = {
-
-    saldo: 0
-
+const App = {
+    saldo: 0,
+    modo: "adicionar"
 };
 
-/*====================================================
-ELEMENTOS DA TELA
-====================================================*/
+// =========================
+// ELEMENTOS
+// =========================
 
 const saldoEl = document.getElementById("saldo");
 const kmPercorridosEl = document.getElementById("kmPercorridos");
@@ -37,8 +24,7 @@ const porcentagemEl = document.getElementById("porcentagem");
 const progressFill = document.getElementById("progressFill");
 
 const modal = document.getElementById("modal");
-
-const valorInput = document.getElementById("valorInput");
+const input = document.getElementById("valorInput");
 
 const btnAdicionar = document.getElementById("btnAdicionar");
 const btnRetirar = document.getElementById("btnRetirar");
@@ -46,179 +32,157 @@ const btnRetirar = document.getElementById("btnRetirar");
 const btnSalvar = document.getElementById("salvar");
 const btnCancelar = document.getElementById("cancelar");
 
-/*====================================================
-FORMATAÇÃO
-====================================================*/
+const petalsContainer = document.getElementById("petals-container");
 
-function formatarMoeda(valor){
+// =========================
+// FORMATAR
+// =========================
 
-    return valor.toLocaleString("pt-BR",{
+function moeda(valor) {
 
-        style:"currency",
-
-        currency:"BRL"
-
+    return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
     });
 
 }
 
-/*====================================================
-CÁLCULOS
-====================================================*/
+// =========================
+// CÁLCULOS
+// =========================
 
-function calcularProgresso(){
+function porcentagem() {
 
-    const porcentagem = Math.min(
-
-        (state.saldo / META_FINANCEIRA) * 100,
-
+    return Math.min(
+        (App.saldo / META_FINANCEIRA) * 100,
         100
-
     );
-
-    return porcentagem;
 
 }
 
-function calcularKmPercorridos(){
+function kmPercorridos() {
 
     return Math.round(
-
-        (state.saldo / META_FINANCEIRA)
-
-        *
-
-        DISTANCIA_TOTAL
-
+        DISTANCIA_TOTAL * porcentagem() / 100
     );
 
 }
 
-function calcularKmRestantes(){
+function kmRestantes() {
 
-    const restante =
-
-        DISTANCIA_TOTAL -
-
-        calcularKmPercorridos();
-
-    return Math.max(restante,0);
+    return Math.max(
+        DISTANCIA_TOTAL - kmPercorridos(),
+        0
+    );
 
 }
 
-/*====================================================
-ATUALIZA INTERFACE
-====================================================*/
+// =========================
+// TELA
+// =========================
 
-function atualizarInterface(){
+function atualizarTela() {
 
-    saldoEl.textContent =
-
-        formatarMoeda(state.saldo);
+    saldoEl.textContent = moeda(App.saldo);
 
     kmPercorridosEl.textContent =
-
-        `${calcularKmPercorridos()} km`;
+        kmPercorridos() + " km";
 
     kmRestantesEl.textContent =
-
-        `${calcularKmRestantes()} km`;
-
-    const progresso =
-
-        calcularProgresso();
-
-    porcentagemEl.textContent =
-
-        `${progresso.toFixed(1)}%`;
+        kmRestantes() + " km";
 
     progressFill.style.width =
+        porcentagem() + "%";
 
-        `${progresso}%`;
+    porcentagemEl.textContent =
+        porcentagem().toFixed(1) + "%";
 
 }
 
-/*====================================================
-MODAL
-====================================================*/
+// =========================
+// MODAL
+// =========================
 
-function abrirModal(){
+function abrirModal(tipo) {
+
+    App.modo = tipo;
+
+    input.value = "";
 
     modal.classList.add("active");
 
-    valorInput.value = "";
+    setTimeout(() => {
 
-    setTimeout(()=>{
+        input.focus();
 
-        valorInput.focus();
-
-    },150);
+    }, 100);
 
 }
 
-function fecharModal(){
+function fecharModal() {
 
     modal.classList.remove("active");
 
-}/*====================================================
-MOVIMENTAÇÕES
-====================================================*/
+    input.value = "";
 
-function adicionarDinheiro(valor){
+}// =========================
+// MOVIMENTAÇÕES
+// =========================
 
-    state.saldo += valor;
+function adicionar(valor) {
 
-    atualizarInterface();
+    App.saldo += valor;
+
+    atualizarTela();
 
     criarPetalas();
 
 }
 
-function retirarDinheiro(valor){
+function retirar(valor) {
 
-    state.saldo -= valor;
+    App.saldo -= valor;
 
-    if(state.saldo < 0){
-
-        state.saldo = 0;
-
+    if (App.saldo < 0) {
+        App.saldo = 0;
     }
 
-    atualizarInterface();
+    atualizarTela();
 
 }
 
-/*====================================================
-SALVAR
-====================================================*/
+// =========================
+// SALVAR
+// =========================
 
-function salvarValor(){
+function salvar() {
 
-    const valor = Number(valorInput.value);
+    const valor = parseFloat(
+        input.value.replace(",", ".")
+    );
 
-    if(isNaN(valor) || valor <= 0){
-
-        valorInput.focus();
-
+    if (isNaN(valor) || valor <= 0) {
+        input.focus();
         return;
-
     }
 
-    adicionarDinheiro(valor);
+    if (App.modo === "adicionar") {
+        adicionar(valor);
+    } else {
+        retirar(valor);
+    }
 
     fecharModal();
 
 }
 
-/*====================================================
-PÉTALAS
-====================================================*/
+// =========================
+// PÉTALAS
+// =========================
 
-function criarPetalas(){
+function criarPetalas() {
 
-    const container = document.getElementById("petals-container");
-
-    for(let i = 0; i < 18; i++){
+    for (let i = 0; i < 20; i++) {
 
         const petala = document.createElement("div");
 
@@ -227,89 +191,66 @@ function criarPetalas(){
         petala.style.left = Math.random() * 100 + "%";
 
         petala.style.animationDuration =
-
-            (4 + Math.random() * 4) + "s";
+            (4 + Math.random() * 3) + "s";
 
         petala.style.animationDelay =
-
-            (Math.random() * .8) + "s";
+            (Math.random() * 0.5) + "s";
 
         petala.style.transform =
+            `scale(${0.7 + Math.random()})`;
 
-            `scale(${0.6 + Math.random()})`;
+        petalsContainer.appendChild(petala);
 
-        container.appendChild(petala);
-
-        petala.addEventListener("animationend",()=>{
-
+        petala.addEventListener("animationend", () => {
             petala.remove();
-
         });
 
     }
 
 }
 
-/*====================================================
-EVENTOS
-====================================================*/
+// =========================
+// EVENTOS
+// =========================
 
-btnAdicionar.addEventListener("click",abrirModal);
-
-btnCancelar.addEventListener("click",fecharModal);
-
-btnSalvar.addEventListener("click",salvarValor);
-
-btnRetirar.addEventListener("click",()=>{
-
-    const valor = Number(valorInput.value);
-
-    if(!valor || valor <= 0){
-
-        abrirModal();
-
-        return;
-
-    }
-
-    retirarDinheiro(valor);
-
+btnAdicionar.addEventListener("click", () => {
+    abrirModal("adicionar");
 });
 
-modal.addEventListener("click",(event)=>{
+btnRetirar.addEventListener("click", () => {
+    abrirModal("retirar");
+});
 
-    if(event.target === modal){
+btnSalvar.addEventListener("click", salvar);
 
+btnCancelar.addEventListener("click", fecharModal);
+
+modal.addEventListener("click", (e) => {
+
+    if (e.target === modal) {
         fecharModal();
-
     }
 
 });
 
-valorInput.addEventListener("keydown",(event)=>{
+input.addEventListener("keydown", (e) => {
 
-    if(event.key === "Enter"){
-
-        salvarValor();
-
+    if (e.key === "Enter") {
+        salvar();
     }
 
-    if(event.key === "Escape"){
-
+    if (e.key === "Escape") {
         fecharModal();
-
     }
 
 });
 
-/*====================================================
-INICIALIZAÇÃO
-====================================================*/
+// =========================
+// INICIALIZAÇÃO
+// =========================
 
-function iniciar(){
+// Garante que o modal sempre inicia fechado
+modal.classList.remove("active");
 
-    atualizarInterface();
-
-}
-
-iniciar();
+// Atualiza os valores iniciais
+atualizarTela();

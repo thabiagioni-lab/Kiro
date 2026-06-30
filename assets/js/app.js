@@ -67,3 +67,26 @@ botaoDepositar.addEventListener("click", () => {
     atualizarTela();
 
 });
+// ==============================
+// MODAL
+// ==============================
+
+const modal = document.getElementById("modal");
+
+const botaoDepositar =
+    document.getElementById("depositar");
+
+const cancelar =
+    document.getElementById("cancelar");
+
+botaoDepositar.addEventListener("click", ()=>{
+
+    modal.classList.remove("hidden");
+
+});
+
+cancelar.addEventListener("click", ()=>{
+
+    modal.classList.add("hidden");
+
+});

@@ -90,3 +90,69 @@ cancelar.addEventListener("click", ()=>{
     modal.classList.add("hidden");
 
 });
+// ==============================
+// SALVAR DEPÓSITO
+// ==============================
+
+const campoValor = document.getElementById("valor");
+const salvar = document.getElementById("salvar");
+
+salvar.addEventListener("click", () => {
+
+    const valor = Number(campoValor.value);
+
+    if (isNaN(valor) || valor <= 0) {
+        alert("Digite um valor válido.");
+        return;
+    }
+
+    saldo += valor;
+
+    atualizarTela();
+
+    campoValor.value = "";
+
+    modal.classList.add("hidden");
+
+    comemorar();
+
+});
+// ==============================
+// ANIMAÇÃO
+// ==============================
+
+function comemorar(){
+
+    for(let i = 0; i < 8; i++){
+
+        setTimeout(() => {
+
+            criarPetala();
+
+        }, i * 120);
+
+    }
+
+}function criarPetala(){
+
+    const petala = document.createElement("div");
+
+    petala.className = "petala";
+
+    petala.textContent = "🌸";
+
+    petala.style.left = Math.random() * window.innerWidth + "px";
+
+    petala.style.animationDuration = (5 + Math.random() * 3) + "s";
+
+    petala.style.fontSize = (18 + Math.random() * 10) + "px";
+
+    document.body.appendChild(petala);
+
+    setTimeout(() => {
+
+        petala.remove();
+
+    }, 8000);
+
+}

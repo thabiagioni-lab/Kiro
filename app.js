@@ -1,96 +1,315 @@
-// ===== CONFIGURAÇÕES =====
+/*
+=====================================================
 
-const META = 20000;
-const DISTANCIA_IZUMO = 18700;
+KIRO
+Controle Financeiro da Viagem ao Japão
 
-// ===== DADOS =====
+Versão: 1.0
 
-let saldo = 0;
+=====================================================
+*/
 
-// ===== ELEMENTOS =====
+/*====================================================
+CONFIGURAÇÕES
+====================================================*/
 
-const saldoElemento = document.getElementById("saldo");
-const distanciaElemento = document.getElementById("distancia");
-const progresso = document.querySelector(".progresso");
-const porcentagem = document.getElementById("porcentagem");
+const META_FINANCEIRA = 20000;
+const DISTANCIA_TOTAL = 18500;
 
-const botaoAdicionar = document.querySelector(".verde");
+/*====================================================
+ESTADO DA APLICAÇÃO
+====================================================*/
 
-// ===== FUNÇÃO =====
+const state = {
 
-function atualizarTela(){
+    saldo: 0
 
-    saldoElemento.innerHTML =
-        "R$ " + saldo.toLocaleString("pt-BR",{
-            minimumFractionDigits:2
-        });
+};
 
-    const km = saldo * (DISTANCIA_IZUMO / META);
+/*====================================================
+ELEMENTOS DA TELA
+====================================================*/
 
-    distanciaElemento.innerHTML =
-        km.toFixed(1) + " km";
+const saldoEl = document.getElementById("saldo");
+const kmPercorridosEl = document.getElementById("kmPercorridos");
+const kmRestantesEl = document.getElementById("kmRestantes");
+const porcentagemEl = document.getElementById("porcentagem");
+const progressFill = document.getElementById("progressFill");
 
-    const porcento = (saldo / META) * 100;
+const modal = document.getElementById("modal");
 
-    progresso.style.width = porcento + "%";
+const valorInput = document.getElementById("valorInput");
 
-    porcentagem.innerHTML =
-        porcento.toFixed(1) + "%";
+const btnAdicionar = document.getElementById("btnAdicionar");
+const btnRetirar = document.getElementById("btnRetirar");
+
+const btnSalvar = document.getElementById("salvar");
+const btnCancelar = document.getElementById("cancelar");
+
+/*====================================================
+FORMATAÇÃO
+====================================================*/
+
+function formatarMoeda(valor){
+
+    return valor.toLocaleString("pt-BR",{
+
+        style:"currency",
+
+        currency:"BRL"
+
+    });
 
 }
 
-// ===== BOTÃO =====
+/*====================================================
+CÁLCULOS
+====================================================*/
 
-botaoAdicionar.addEventListener("click", function(){const botaoRetirar = document.querySelector(".rosa");
+function calcularProgresso(){
 
-botaoRetirar.addEventListener("click", function(){
+    const porcentagem = Math.min(
 
-    let valor = prompt("Quanto deseja retirar?");
+        (state.saldo / META_FINANCEIRA) * 100,
 
-    if(valor === null) return;
+        100
 
-    valor = Number(valor.replace(",", "."));
+    );
+
+    return porcentagem;
+
+}
+
+function calcularKmPercorridos(){
+
+    return Math.round(
+
+        (state.saldo / META_FINANCEIRA)
+
+        *
+
+        DISTANCIA_TOTAL
+
+    );
+
+}
+
+function calcularKmRestantes(){
+
+    const restante =
+
+        DISTANCIA_TOTAL -
+
+        calcularKmPercorridos();
+
+    return Math.max(restante,0);
+
+}
+
+/*====================================================
+ATUALIZA INTERFACE
+====================================================*/
+
+function atualizarInterface(){
+
+    saldoEl.textContent =
+
+        formatarMoeda(state.saldo);
+
+    kmPercorridosEl.textContent =
+
+        `${calcularKmPercorridos()} km`;
+
+    kmRestantesEl.textContent =
+
+        `${calcularKmRestantes()} km`;
+
+    const progresso =
+
+        calcularProgresso();
+
+    porcentagemEl.textContent =
+
+        `${progresso.toFixed(1)}%`;
+
+    progressFill.style.width =
+
+        `${progresso}%`;
+
+}
+
+/*====================================================
+MODAL
+====================================================*/
+
+function abrirModal(){
+
+    modal.classList.add("active");
+
+    valorInput.value = "";
+
+    setTimeout(()=>{
+
+        valorInput.focus();
+
+    },150);
+
+}
+
+function fecharModal(){
+
+    modal.classList.remove("active");
+
+}/*====================================================
+MOVIMENTAÇÕES
+====================================================*/
+
+function adicionarDinheiro(valor){
+
+    state.saldo += valor;
+
+    atualizarInterface();
+
+    criarPetalas();
+
+}
+
+function retirarDinheiro(valor){
+
+    state.saldo -= valor;
+
+    if(state.saldo < 0){
+
+        state.saldo = 0;
+
+    }
+
+    atualizarInterface();
+
+}
+
+/*====================================================
+SALVAR
+====================================================*/
+
+function salvarValor(){
+
+    const valor = Number(valorInput.value);
 
     if(isNaN(valor) || valor <= 0){
 
-        alert("Digite um valor válido.");
+        valorInput.focus();
 
         return;
 
     }
 
-    if(valor > saldo){
+    adicionarDinheiro(valor);
 
-        alert("Você não possui esse valor.");
+    fecharModal();
+
+}
+
+/*====================================================
+PÉTALAS
+====================================================*/
+
+function criarPetalas(){
+
+    const container = document.getElementById("petals-container");
+
+    for(let i = 0; i < 18; i++){
+
+        const petala = document.createElement("div");
+
+        petala.className = "petal";
+
+        petala.style.left = Math.random() * 100 + "%";
+
+        petala.style.animationDuration =
+
+            (4 + Math.random() * 4) + "s";
+
+        petala.style.animationDelay =
+
+            (Math.random() * .8) + "s";
+
+        petala.style.transform =
+
+            `scale(${0.6 + Math.random()})`;
+
+        container.appendChild(petala);
+
+        petala.addEventListener("animationend",()=>{
+
+            petala.remove();
+
+        });
+
+    }
+
+}
+
+/*====================================================
+EVENTOS
+====================================================*/
+
+btnAdicionar.addEventListener("click",abrirModal);
+
+btnCancelar.addEventListener("click",fecharModal);
+
+btnSalvar.addEventListener("click",salvarValor);
+
+btnRetirar.addEventListener("click",()=>{
+
+    const valor = Number(valorInput.value);
+
+    if(!valor || valor <= 0){
+
+        abrirModal();
 
         return;
 
     }
 
-    saldo -= valor;
-
-    atualizarTela();
+    retirarDinheiro(valor);
 
 });
 
-    let valor = prompt("Quanto deseja guardar?");
+modal.addEventListener("click",(event)=>{
 
-    if(valor === null) return;
+    if(event.target === modal){
 
-    valor = Number(valor.replace(",", "."));
-
-    if(isNaN(valor) || valor <= 0){
-
-        alert("Digite um valor válido.");
-
-        return;
+        fecharModal();
 
     }
 
-    saldo += valor;
+});
 
-    atualizarTela();
+valorInput.addEventListener("keydown",(event)=>{
+
+    if(event.key === "Enter"){
+
+        salvarValor();
+
+    }
+
+    if(event.key === "Escape"){
+
+        fecharModal();
+
+    }
 
 });
 
-atualizarTela();
+/*====================================================
+INICIALIZAÇÃO
+====================================================*/
+
+function iniciar(){
+
+    atualizarInterface();
+
+}
+
+iniciar();

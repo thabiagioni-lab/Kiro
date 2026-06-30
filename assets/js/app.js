@@ -1,29 +1,43 @@
-// ======================
+// =====================================
 // KIRO v1.0
-// ======================
+// =====================================
 
+// META DA VIAGEM
 const META = 20000;
 const DISTANCIA_TOTAL = 18700;
 
+// DADOS
 let saldo = 0;
 
-// Elementos da tela
+// ELEMENTOS
 const saldoTexto = document.getElementById("saldo");
 const distanciaTexto = document.getElementById("distancia");
 const restanteTexto = document.getElementById("restante");
 const porcentagemTexto = document.getElementById("porcentagem");
 const barra = document.getElementById("barra");
 
-// Atualiza toda a interface
-function atualizarTela() {
+const modal = document.getElementById("modal");
+
+const botaoDepositar = document.getElementById("depositar");
+const botaoCancelar = document.getElementById("cancelar");
+const botaoSalvar = document.getElementById("salvar");
+
+const campoValor = document.getElementById("valor");
+
+// =====================================
+// ATUALIZA A TELA
+// =====================================
+
+function atualizarTela(){
 
     saldoTexto.textContent =
-        saldo.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
+        saldo.toLocaleString("pt-BR",{
+            style:"currency",
+            currency:"BRL"
         });
 
-    const porcentagem = (saldo / META) * 100;
+    const porcentagem =
+        (saldo / META) * 100;
 
     barra.style.width = porcentagem + "%";
 
@@ -41,118 +55,107 @@ function atualizarTela() {
 
 }
 
-atualizarTela();
+// =====================================
+// ABRIR MODAL
+// =====================================
 
-// ======================
-// BOTÃO DE DEPÓSITO
-// ======================
-
-const botaoDepositar = document.getElementById("depositar");
-
-botaoDepositar.addEventListener("click", () => {
-
-    const valorTexto = prompt("Quanto deseja guardar?");
-
-    if (valorTexto === null) return;
-
-    const valor = Number(valorTexto.replace(",", "."));
-
-    if (isNaN(valor) || valor <= 0) {
-        alert("Digite um valor válido.");
-        return;
-    }
-
-    saldo += valor;
-
-    atualizarTela();
-
-});
-// ==============================
-// MODAL
-// ==============================
-
-const modal = document.getElementById("modal");
-
-const botaoDepositar =
-    document.getElementById("depositar");
-
-const cancelar =
-    document.getElementById("cancelar");
-
-botaoDepositar.addEventListener("click", ()=>{
+botaoDepositar.addEventListener("click",()=>{
 
     modal.classList.remove("hidden");
 
+    campoValor.focus();
+
 });
 
-cancelar.addEventListener("click", ()=>{
+// =====================================
+// FECHAR MODAL
+// =====================================
+
+botaoCancelar.addEventListener("click",()=>{
 
     modal.classList.add("hidden");
 
+    campoValor.value="";
+
 });
-// ==============================
-// SALVAR DEPÓSITO
-// ==============================
 
-const campoValor = document.getElementById("valor");
-const salvar = document.getElementById("salvar");
+// =====================================
+// SALVAR
+// =====================================
 
-salvar.addEventListener("click", () => {
+botaoSalvar.addEventListener("click",()=>{
 
-    const valor = Number(campoValor.value);
+    const valor =
+        Number(campoValor.value.replace(",","."));
 
-    if (isNaN(valor) || valor <= 0) {
+    if(isNaN(valor) || valor<=0){
+
         alert("Digite um valor válido.");
+
         return;
+
     }
 
     saldo += valor;
 
     atualizarTela();
 
-    campoValor.value = "";
-
     modal.classList.add("hidden");
+
+    campoValor.value="";
 
     comemorar();
 
 });
-// ==============================
-// ANIMAÇÃO
-// ==============================
 
-function comemorar(){
+// =====================================
+// PÉTALAS
+// =====================================
 
-    for(let i = 0; i < 8; i++){
+function criarPetala(){
 
-        setTimeout(() => {
+    const petala =
+        document.createElement("div");
 
-            criarPetala();
+    petala.className="petala";
 
-        }, i * 120);
+    petala.textContent="🌸";
 
-    }
+    petala.style.left =
+        Math.random()*window.innerWidth+"px";
 
-}function criarPetala(){
+    petala.style.animationDuration =
+        (5+Math.random()*3)+"s";
 
-    const petala = document.createElement("div");
-
-    petala.className = "petala";
-
-    petala.textContent = "🌸";
-
-    petala.style.left = Math.random() * window.innerWidth + "px";
-
-    petala.style.animationDuration = (5 + Math.random() * 3) + "s";
-
-    petala.style.fontSize = (18 + Math.random() * 10) + "px";
+    petala.style.fontSize =
+        (18+Math.random()*10)+"px";
 
     document.body.appendChild(petala);
 
-    setTimeout(() => {
+    setTimeout(()=>{
 
         petala.remove();
 
-    }, 8000);
+    },8000);
 
 }
+
+function comemorar(){
+
+    for(let i=0;i<8;i++){
+
+        setTimeout(()=>{
+
+            criarPetala();
+
+        },i*120);
+
+    }
+
+}
+
+// =====================================
+// INICIAR
+// =====================================
+
+atualizarTela();

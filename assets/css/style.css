@@ -441,3 +441,87 @@ button{
     }
 
 }
+/* ==========================
+   MODAL
+========================== */
+
+.hidden{
+    display:none;
+}
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.35);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:99999;
+
+}
+
+.modal-card{
+
+    width:90%;
+    max-width:360px;
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:24px;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.20);
+
+}
+
+.modal-card h2{
+
+    margin-bottom:20px;
+
+}
+
+.modal-card label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+}
+
+.modal-card input{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:1px solid #DDD;
+
+    margin-bottom:20px;
+
+    font-size:16px;
+
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+}
+
+.modal-buttons button{
+
+    flex:1;
+
+}

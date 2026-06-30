@@ -2,7 +2,9 @@
    KIRO v1.0
    Base de Estilos
 =================================================== */
-
+body{
+    background:red !important;
+}
 *{
     margin:0;
     padding:0;

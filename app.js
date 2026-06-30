@@ -41,7 +41,37 @@ function atualizarTela(){
 
 // ===== BOTÃO =====
 
-botaoAdicionar.addEventListener("click", function(){
+botaoAdicionar.addEventListener("click", function(){const botaoRetirar = document.querySelector(".rosa");
+
+botaoRetirar.addEventListener("click", function(){
+
+    let valor = prompt("Quanto deseja retirar?");
+
+    if(valor === null) return;
+
+    valor = Number(valor.replace(",", "."));
+
+    if(isNaN(valor) || valor <= 0){
+
+        alert("Digite um valor válido.");
+
+        return;
+
+    }
+
+    if(valor > saldo){
+
+        alert("Você não possui esse valor.");
+
+        return;
+
+    }
+
+    saldo -= valor;
+
+    atualizarTela();
+
+});
 
     let valor = prompt("Quanto deseja guardar?");
 

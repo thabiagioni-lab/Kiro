@@ -72,7 +72,7 @@ btnCancelar.addEventListener("click", () => {
 
 // ---------- Salvar ----------
 
-btnSalvar.addEventListener("click", () => 
+btnSalvar.addEventListener("click", () => {
     console.log("Cliquei em Salvar!");
 
     const valor = parseFloat(

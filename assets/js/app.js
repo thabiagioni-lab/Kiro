@@ -33,6 +33,13 @@ const btnCancelarRetirada = document.getElementById("btnCancelarRetirada");
 const btnSalvarRetirada = document.getElementById("btnSalvarRetirada");
 
 const valorRetirada = document.getElementById("valorRetirada");
+const toast = document.getElementById("toast");
+
+const toastTitulo = document.getElementById("toastTitulo");
+
+const toastValor = document.getElementById("toastValor");
+
+const toastTexto = document.getElementById("toastTexto");
 // ---------- Atualiza tela ----------
 
 function atualizarTela() {
@@ -112,6 +119,7 @@ btnSalvarRetirada.addEventListener("click", () => {
     valorRetirada.value = "";
 
 });
+mostrarToast("➖ Retirada registrada", valor);
 // ---------- Salvar ----------
 
 btnSalvar.addEventListener("click", () => {
@@ -138,7 +146,7 @@ atualizarTela();
 modal.classList.add("hidden");
 
 comemorar();
-
+mostrarToast("🌸 Depósito realizado", valor);
 });
 
 // ---------- Retirar ----------
@@ -197,5 +205,31 @@ function comemorar() {
 }
 
 // ---------- Iniciar ----------
+function mostrarToast(titulo, valor){
 
+    const km =
+        (valor / META) * DISTANCIA_TOTAL;
+
+    toastTitulo.textContent = titulo;
+
+    toastValor.textContent =
+        valor.toLocaleString("pt-BR",{
+            style:"currency",
+            currency:"BRL"
+        });
+
+    toastTexto.textContent =
+        "Você avançou " +
+        Math.round(km) +
+        " km rumo a Izumo.";
+
+    toast.classList.remove("hidden");
+
+    setTimeout(()=>{
+
+        toast.classList.add("hidden");
+
+    },3000);
+
+}
 atualizarTela();

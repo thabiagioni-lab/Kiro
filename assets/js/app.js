@@ -114,12 +114,14 @@ btnSalvarRetirada.addEventListener("click", () => {
 
     atualizarTela();
 
+    mostrarToast("➖ Retirada registrada", valor);
+
     modalRetirada.classList.add("hidden");
 
     valorRetirada.value = "";
 
 });
-mostrarToast("➖ Retirada registrada", valor);
+
 // ---------- Salvar ----------
 
 btnSalvar.addEventListener("click", () => {

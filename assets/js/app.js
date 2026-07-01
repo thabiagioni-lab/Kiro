@@ -1,15 +1,18 @@
-// ===============================
-// KIRO v1.0
-// ===============================
+// ==========================================
+// KIRO v1.1
+// ==========================================
+
+// ---------- CONFIGURAÇÕES ----------
 
 const META = 20000;
 const DISTANCIA_TOTAL = 18700;
 
-// ---------- Dados ----------
+// ---------- DADOS ----------
 
-let saldo = Number(localStorage.getItem("kiroSaldo")) || 0;
+let saldo =
+    Number(localStorage.getItem("kiroSaldo")) || 0;
 
-// ---------- Elementos ----------
+// ---------- ELEMENTOS ----------
 
 const saldoEl = document.getElementById("saldo");
 const kmPercorridosEl = document.getElementById("kmPercorridos");
@@ -17,55 +20,95 @@ const kmRestantesEl = document.getElementById("kmRestantes");
 const percentualEl = document.getElementById("percentual");
 const progressFill = document.getElementById("progressFill");
 
+// ---------- MODAL DEPÓSITO ----------
+
 const modal = document.getElementById("modal");
 
-const btnAdicionar = document.getElementById("btnAdicionar");
-const btnRetirar = document.getElementById("btnRetirar");
-const btnCancelar = document.getElementById("btnCancelar");
-const btnSalvar = document.getElementById("btnSalvar");
+const btnAdicionar =
+    document.getElementById("btnAdicionar");
 
-const valorInput = document.getElementById("valorInput");
-const modalRetirada = document.getElementById("modalRetirada");
+const btnCancelar =
+    document.getElementById("btnCancelar");
 
-const btnCancelarRetirada = document.getElementById("btnCancelarRetirada");
+const btnSalvar =
+    document.getElementById("btnSalvar");
 
-const btnSalvarRetirada = document.getElementById("btnSalvarRetirada");
+const valorInput =
+    document.getElementById("valorInput");
 
-const valorRetirada = document.getElementById("valorRetirada");
-const toast = document.getElementById("toast");
+// ---------- MODAL RETIRADA ----------
 
-const toastTitulo = document.getElementById("toastTitulo");
+const modalRetirada =
+    document.getElementById("modalRetirada");
 
-const toastValor = document.getElementById("toastValor");
+const btnRetirar =
+    document.getElementById("btnRetirar");
 
-const toastTexto = document.getElementById("toastTexto");
-// ---------- Atualiza tela ----------
+const btnCancelarRetirada =
+    document.getElementById("btnCancelarRetirada");
 
-function atualizarTela() {
+const btnSalvarRetirada =
+    document.getElementById("btnSalvarRetirada");
 
-    saldoEl.textContent = saldo.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
+const valorRetirada =
+    document.getElementById("valorRetirada");
 
-    const percentual = Math.min((saldo / META) * 100, 100);
+// ---------- TOAST ----------
 
-    progressFill.style.width = percentual + "%";
+const toast =
+    document.getElementById("toast");
 
-    percentualEl.textContent = percentual.toFixed(1) + "%";
+const toastTitulo =
+    document.getElementById("toastTitulo");
 
-    const km = (saldo / META) * DISTANCIA_TOTAL;
+const toastValor =
+    document.getElementById("toastValor");
 
-    kmPercorridosEl.textContent = Math.round(km) + " km";
+const toastTexto =
+    document.getElementById("toastTexto");
+
+// ==========================================
+// ATUALIZA TELA
+// ==========================================
+
+function atualizarTela(){
+
+    saldoEl.textContent =
+        saldo.toLocaleString("pt-BR",{
+            style:"currency",
+            currency:"BRL"
+        });
+
+    const porcentagem =
+        Math.min((saldo/META)*100,100);
+
+    progressFill.style.width =
+        porcentagem + "%";
+
+    percentualEl.textContent =
+        porcentagem.toFixed(1) + "%";
+
+    const km =
+        (saldo/META)*DISTANCIA_TOTAL;
+
+    kmPercorridosEl.textContent =
+        Math.round(km) + " km";
 
     kmRestantesEl.textContent =
-        Math.max(0, Math.round(DISTANCIA_TOTAL - km)) + " km";
+        Math.max(
+            0,
+            Math.round(DISTANCIA_TOTAL-km)
+        ) + " km";
 
-    localStorage.setItem("kiroSaldo", saldo);
+    localStorage.setItem(
+        "kiroSaldo",
+        saldo
+    );
 
 }
-
-// ---------- Modal ----------
+// ==========================================
+// MODAL DEPÓSITO
+// ==========================================
 
 btnAdicionar.addEventListener("click", () => {
 
@@ -82,11 +125,68 @@ btnCancelar.addEventListener("click", () => {
     modal.classList.add("hidden");
 
 });
+
+// ==========================================
+// SALVAR DEPÓSITO
+// ==========================================
+
+btnSalvar.addEventListener("click", () => {
+
+    const valor = parseFloat(
+        valorInput.value.replace(",", ".")
+    );
+
+    if (isNaN(valor) || valor <= 0) {
+
+        alert("Digite um valor válido.");
+
+        return;
+
+    }
+
+    saldo += valor;
+
+    adicionarHistorico("🌸 +", valor);
+
+    atualizarTela();
+
+    modal.classList.add("hidden");
+
+    valorInput.value = "";
+
+    comemorar();
+
+    mostrarToast(
+        "🌸 Depósito realizado",
+        valor
+    );
+
+});
+
+// ==========================================
+// MODAL RETIRADA
+// ==========================================
+
+btnRetirar.addEventListener("click", () => {
+
+    valorRetirada.value = "";
+
+    modalRetirada.classList.remove("hidden");
+
+    valorRetirada.focus();
+
+});
+
 btnCancelarRetirada.addEventListener("click", () => {
 
     modalRetirada.classList.add("hidden");
 
 });
+
+// ==========================================
+// SALVAR RETIRADA
+// ==========================================
+
 btnSalvarRetirada.addEventListener("click", () => {
 
     const valor = parseFloat(
@@ -103,7 +203,7 @@ btnSalvarRetirada.addEventListener("click", () => {
 
     saldo -= valor;
 
-    if (saldo < 0) {
+    if (saldo < 0){
 
         saldo = 0;
 
@@ -111,58 +211,21 @@ btnSalvarRetirada.addEventListener("click", () => {
 
     adicionarHistorico("➖", valor);
 
-atualizarTela();
+    atualizarTela();
 
-mostrarToast("➖ Retirada registrada", valor);
-
-modalRetirada.classList.add("hidden");
-
-valorRetirada.value = "";
-
-});
-
-// ---------- Salvar ----------
-
-btnSalvar.addEventListener("click", () => {
-    console.log("Cliquei em Salvar!");
-
-    const valor = parseFloat(
-        valorInput.value.replace(",", ".")
-    );
-
-    if (isNaN(valor) || valor <= 0) {
-
-        alert("Digite um valor válido.");
-
-        return;
-
-    }
-
-    saldo += valor;
-
-adicionarHistorico("🌸 +", valor);
-
-atualizarTela();
-
-modal.classList.add("hidden");
-
-comemorar();
-mostrarToast("🌸 Depósito realizado", valor);
-});
-
-// ---------- Retirar ----------
-
-btnRetirar.addEventListener("click", () => {
+    modalRetirada.classList.add("hidden");
 
     valorRetirada.value = "";
 
-    modalRetirada.classList.remove("hidden");
-
-    valorRetirada.focus();
+    mostrarToast(
+        "➖ Retirada registrada",
+        valor
+    );
 
 });
-
-// ---------- Pétalas ----------
+// ==========================================
+// PÉTALAS
+// ==========================================
 
 function criarPetala() {
 
@@ -205,8 +268,13 @@ function comemorar() {
 
 }
 
-// ---------- Iniciar ----------
+// ==========================================
+// TOAST
+// ==========================================
+
 function mostrarToast(titulo, valor){
+
+    if(!toast) return;
 
     const km =
         (valor / META) * DISTANCIA_TOTAL;
@@ -226,11 +294,23 @@ function mostrarToast(titulo, valor){
 
     toast.classList.remove("hidden");
 
-    setTimeout(()=>{
+    clearTimeout(toast.timer);
+
+    toast.timer = setTimeout(() => {
 
         toast.classList.add("hidden");
 
     },3000);
 
 }
+// ==========================================
+// INICIAR APLICAÇÃO
+// ==========================================
+
 atualizarTela();
+
+if (typeof atualizarHistorico === "function") {
+
+    atualizarHistorico();
+
+}

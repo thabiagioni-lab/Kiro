@@ -26,7 +26,13 @@ const btnCancelar = document.getElementById("btnCancelar");
 const btnSalvar = document.getElementById("btnSalvar");
 
 const valorInput = document.getElementById("valorInput");
+const modalRetirada = document.getElementById("modalRetirada");
 
+const btnCancelarRetirada = document.getElementById("btnCancelarRetirada");
+
+const btnSalvarRetirada = document.getElementById("btnSalvarRetirada");
+
+const valorRetirada = document.getElementById("valorRetirada");
 // ---------- Atualiza tela ----------
 
 function atualizarTela() {
@@ -70,7 +76,11 @@ btnCancelar.addEventListener("click", () => {
     modal.classList.add("hidden");
 
 });
+btnCancelarRetirada.addEventListener("click", () => {
 
+    modalRetirada.classList.add("hidden");
+
+});
 // ---------- Salvar ----------
 
 btnSalvar.addEventListener("click", () => {
@@ -104,33 +114,11 @@ comemorar();
 
 btnRetirar.addEventListener("click", () => {
 
-    const texto = prompt("Quanto deseja retirar?");
+    valorRetirada.value = "";
 
-    if (texto === null) return;
+    modalRetirada.classList.remove("hidden");
 
-    const valor = parseFloat(
-        texto.replace(",", ".")
-    );
-
-    if (isNaN(valor) || valor <= 0) {
-
-        alert("Valor inválido.");
-
-        return;
-
-    }
-
-   saldo -= valor;
-
-if (saldo < 0) {
-
-    saldo = 0;
-
-}
-
-adicionarHistorico("➖", valor);
-
-atualizarTela();;
+    valorRetirada.focus();
 
 });
 

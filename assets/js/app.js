@@ -111,13 +111,13 @@ btnSalvarRetirada.addEventListener("click", () => {
 
     adicionarHistorico("➖", valor);
 
-    atualizarTela();
+atualizarTela();
 
-    mostrarToast("➖ Retirada registrada", valor);
+mostrarToast("➖ Retirada registrada", valor);
 
-    modalRetirada.classList.add("hidden");
+modalRetirada.classList.add("hidden");
 
-    valorRetirada.value = "";
+valorRetirada.value = "";
 
 });
 

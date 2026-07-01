@@ -294,3 +294,78 @@ h1{
     margin:8px 0;
 
 }
+/* ===========================
+   TOAST
+=========================== */
+
+.toast{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:25px;
+
+    width:320px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+
+    z-index:9999;
+
+    animation:aparecer .35s;
+
+}
+
+.toast-title{
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#5D7A4E;
+
+}
+
+.toast-value{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    margin:10px 0;
+
+}
+
+.toast-text{
+
+    color:#777;
+
+    line-height:1.4;
+
+}
+
+@keyframes aparecer{
+
+    from{
+
+        transform:translateY(30px);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:translateY(0);
+
+        opacity:1;
+
+    }
+
+}

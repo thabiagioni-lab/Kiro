@@ -81,6 +81,37 @@ btnCancelarRetirada.addEventListener("click", () => {
     modalRetirada.classList.add("hidden");
 
 });
+btnSalvarRetirada.addEventListener("click", () => {
+
+    const valor = parseFloat(
+        valorRetirada.value.replace(",", ".")
+    );
+
+    if (isNaN(valor) || valor <= 0) {
+
+        alert("Digite um valor válido.");
+
+        return;
+
+    }
+
+    saldo -= valor;
+
+    if (saldo < 0) {
+
+        saldo = 0;
+
+    }
+
+    adicionarHistorico("➖", valor);
+
+    atualizarTela();
+
+    modalRetirada.classList.add("hidden");
+
+    valorRetirada.value = "";
+
+});
 // ---------- Salvar ----------
 
 btnSalvar.addEventListener("click", () => {

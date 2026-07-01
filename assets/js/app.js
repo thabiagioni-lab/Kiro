@@ -89,11 +89,13 @@ btnSalvar.addEventListener("click", () =>
 
     saldo += valor;
 
-    atualizarTela();
+adicionarHistorico("🌸 +", valor);
 
-    modal.classList.add("hidden");
+atualizarTela();
 
-    comemorar();
+modal.classList.add("hidden");
+
+comemorar();
 
 });
 
@@ -117,15 +119,17 @@ btnRetirar.addEventListener("click", () => {
 
     }
 
-    saldo -= valor;
+   saldo -= valor;
 
-    if (saldo < 0) {
+if (saldo < 0) {
 
-        saldo = 0;
+    saldo = 0;
 
-    }
+}
 
-    atualizarTela();
+adicionarHistorico("➖", valor);
+
+atualizarTela();;
 
 });
 

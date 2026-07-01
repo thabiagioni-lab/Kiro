@@ -228,3 +228,58 @@ h1{
     .cards{grid-template-columns:1fr;}
 }
 
+/* ===========================
+   HISTÓRICO
+=========================== */
+
+#historico{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    margin-top:18px;
+
+}
+
+.movimento{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:16px;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.06);
+
+    transition:.25s;
+
+}
+
+.movimento:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.movimento strong{
+
+    display:block;
+
+    font-size:18px;
+
+    color:#5D7A4E;
+
+    margin-bottom:8px;
+
+}
+
+.movimento small{
+
+    color:#8b8b8b;
+
+    font-size:13px;
+
+}

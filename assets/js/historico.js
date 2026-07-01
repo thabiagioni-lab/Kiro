@@ -48,16 +48,24 @@ function atualizarHistorico(){
 
         div.className = "movimento";
 
-        div.innerHTML = `
+        const titulo =
+    item.tipo === "🌸 +" ? "🌸 Depósito" : "➖ Retirada";
 
-            <strong>${item.tipo} R$ ${item.valor.toFixed(2)}</strong>
+const valor =
+    item.valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 
-            <br>
+div.innerHTML = `
 
-            <small>${item.data}</small>
+    <strong>${titulo}</strong>
 
-        `;
+    <div class="valor">${valor}</div>
 
+    <small>📅 ${item.data}</small>
+
+`;
         lista.appendChild(div);
 
     });
